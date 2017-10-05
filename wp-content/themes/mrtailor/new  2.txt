@@ -1,0 +1,24 @@
+[design] => Array
+        (
+            [jacket-style] => Single Breast
+            [jacket-buttons-single] => Single Button
+            [jacket-buttons-double] => Double Button
+            [lapel] => Notched
+            [lapel-width] => Standard
+            [pockets] => Standard - Flap
+            [sleeve-buttons] => One
+            [back] => No Vent
+        )
+
+    [extras] => Array
+        (
+            [pick-stitching] => No-0
+            [functioning-sleeve-buttons] => No-0
+            [butonniere-colour] => Standard-0
+            [collar-felt-color] => Standard-0
+            [buttonhole-color] => Standard-0
+            [monogram] => No-0
+            [contrasting-buttons] => Standard-0
+            [matching-vest] => No-0
+            [extra-pants] => No-0
+        )

@@ -1,0 +1,27 @@
+/**********************************************************************************/
+/* Theme Options ******************************************************************/
+/**********************************************************************************/
+
+#wp-admin-bar-theme_options .dashicons-admin-generic:before {
+	content: "\f108";
+	top:2px;
+}
+
+#adminmenu #toplevel_page_theme_options .menu-icon-generic div.wp-menu-image:before {
+	content: "\f108";
+}
+
+.redux-container-image_select .redux-image-select img {
+	width:96px !important;
+	height:72px !important;
+	max-height:72px !important;
+}
+
+.rs-update-notice-wrap
+{
+	display:none !important;
+}
+
+.vc_editor #wpcontent {
+	padding-left: 0px !important;
+}
