@@ -1,0 +1,5 @@
+[24-Feb-2016 13:37:33 America/Denver] PHP Fatal error:  Class 'WP_Customize_Setting' not found in /home/jcoutier/public_html/wp-includes/customize/class-wp-customize-header-image-setting.php on line 19
+[27-Feb-2016 06:24:54 America/Denver] PHP Fatal error:  Class 'WP_Customize_Section' not found in /home/jcoutier/public_html/wp-includes/customize/class-wp-customize-sidebar-section.php on line 17
+[27-Feb-2016 22:57:36 America/Denver] PHP Fatal error:  Class 'WP_Customize_Control' not found in /home/jcoutier/public_html/wp-includes/customize/class-wp-customize-theme-control.php on line 17
+[28-Feb-2016 06:08:28 America/Denver] PHP Fatal error:  Class 'WP_Customize_Section' not found in /home/jcoutier/public_html/wp-includes/customize/class-wp-customize-new-menu-section.php on line 19
+[03-Mar-2016 19:37:21 America/Denver] PHP Fatal error:  Class 'WP_Customize_Control' not found in /home/jcoutier/public_html/wp-includes/customize/class-wp-customize-nav-menu-location-control.php on line 19
