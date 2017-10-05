@@ -1,0 +1,509 @@
+<link rel="stylesheet" type="text/css" href="<?php echo bloginfo("template_directory")?>/css/dd.css" />
+<script src="<?php echo bloginfo("template_directory")?>/js/jquery.dd.js"></script>
+<?php
+
+global $product_id, $post_type, $settings_id, $material_id, $meta_box_prefix, $cart_key;
+$post = get_post($post->ID);
+
+setup_postdata($post);
+
+if($_GET['similar'] !=NULL){
+
+    $cart_key = $_GET['similar'] ;
+}
+elseif($_GET['edit'] !=NULL){
+    $cart_key = $_GET['edit'] ;    
+    
+}
+
+if (!empty($cart_key))	{
+    $selected_values = $_SESSION['cart']['items'][$cart_key]['extras'];
+}
+?>
+
+
+<?php if($post_type!='product-pants' && $post_type!='product-chinos'): ?>
+
+
+<div class="browse-product-wrap extract <?php echo $post_type; ?> span6" <?php if($_REQUEST['action']=='buy-now'){echo "style='display:none'";}?>>
+	<!--<div class="row-fluid">
+		<div class="span12">
+			<div class="browse2-product-title">
+				<h2><?php the_title(); ?></h2>
+				<h3><?php echo get_currency_sign() . get_currency_price(get_field('price')); ?></h3>
+			</div>
+		</div>
+	</div>-->
+	<div class="browse-product-wrap-box">
+		<!-- popup hidden for development -->
+	<?php 
+        //echo"<pre>";print_r(get_field('extras_settings', $settings_id));
+        if (get_field('extras_settings', $settings_id))	{ ?>
+		<!-- collar -->
+		<div class="popup-input-wrap">
+                     
+		<?php while (has_sub_field('extras_settings', $settings_id))	{ ?>
+		<?php $option_name = sanitize_title(get_sub_field('setting_name', $settings_id)); ?>
+		<?php
+			if ($material_id != 0)	{
+				$selected_value = get_post_meta($product_id, $meta_box_prefix . sanitize_title(get_sub_field('setting_name', $settings_id)), true);
+			}
+			if (!empty($selected_values))	{ $selected_value = $selected_values[$option_name]; }
+		?>
+			<div class="popup-window" id="extras-<?php echo $option_name; ?>" data-target="#target-<?php echo $option_name; ?>">
+                            <div class="snd_popup_img">
+                            <?php if (get_sub_field('show_me', $settings_id))	{ ?>
+                                <img src="<?php echo get_sub_field('show_me', $settings_id); ?>" alt="<?php the_sub_field('option_name'); ?>">
+                            <?php } ?> 
+                            </div>
+                            
+                            <?php if($option_name=='contrasting-buttons' || $option_name=='contrastingbuttonhole-stitching' || $option_name=='waistband-lining' || $option_name =='back-packet-lining' ||$option_name =='contrastingcollar-cuff-lining' )
+                            
+                            { ?>
+                            <select name="<?php echo $option_name; ?>" style="width: 250px;height:<?php if($option_name=='contrasting-buttons' || $option_name=='waistband-lining' || $option_name =='back-packet-lining' ) { echo "66px"; } else { echo "42px"; }?>;" onchange="change_select_option(this)" id="target-<?php echo $option_name; ?>_popup">
+			<?php $x=0; while (has_sub_field('options', $settings_id))	{ 
+                                
+                                if (get_sub_field('option_price'))
+                                {
+    								$price = get_currency_price(get_sub_field('option_price'));
+    							}
+                                else
+                                {
+    								$price = "";
+    							}
+                                                        ?>
+                                <option value="<?php echo trim(get_sub_field('option_name')).'-'.$x;?>" data-image="<?php the_sub_field('option_image'); ?>">
+                                    
+					<a href="#"><?php the_sub_field('option_name'); ?><?php if (!empty($price)) {echo "[+".get_currency_sign()."$price]";}?></a>
+				
+                        </option>			
+			<?php $x++; } ?>
+                            </select>
+                            <script>
+                                function change_select_option(t)
+                                {
+                                   //console.log(t, t.value);
+                                   jQuery("#"+jQuery(t).attr('id').split('_')[0]).val(t.value);
+                                   jQuery.fancybox.close();
+                                }
+                                </script>
+                                <?php } else if($option_name=='monogram') { 
+                                    
+                                    
+                                    
+                                    
+                                    ?>
+                                     
+                                <div class="mono_option">
+                                <?php $l=1; $x = 1; while (has_sub_field('options', $settings_id))	{ ?>
+				<div class="popup-input-box<?php if ($selected_value == trim(get_sub_field('option_name'))) { ?> selected-option<?php } ?>" data-select="<?=trim(get_sub_field('option_name'));?>-<?php echo $x-1; ?>" data-option="<?php echo $option_name;?>">
+                                                                       
+                                    <?php $slec=get_sub_field('option_name'); ?>
+                                    <a href="#" class="styl<?php echo $l; ?>"><input type="radio" value="<?php the_sub_field('option_name'); ?>" name="monogram_type" <?php if($slec=="No"){ echo 'checked';} ?>    /> <?php the_sub_field('option_name'); ?></a>
+                                    </div>
+				
+			<?php if (($x%4) == 0 && $x != 0) { echo '<div class="clear"></div>'; } ?>
+			<?php $l++; $x++; } ?>
+           
+                               </div> 
+                                
+                                <div class="popup-label" style="display:none;">
+                                                            
+							<?php if (get_field('monogram_positions',$settings_id)){ 
+                                                        $dd=get_field('monogram_positions',$settings_id);
+                                                        
+                                                            ?>
+                                                            <div class="mono_pop_slt">
+									<label for="popup-position">Position</label>
+									<select name="extras[position]">
+										<option value=""> - </option>
+									<?php for($h=0;$h<count(get_field('monogram_positions',$settings_id));$h++)
+                                                        { ?>
+									
+							<option value="<?php echo $dd[$h]['monogram_position']; ?>" <?php if ($option_name == $selected_values['position']) { ?>selected="selected"<?php } ?>><?php echo $dd[$h]['monogram_position']; ?></option>
+                                                        
+									<?php } ?>
+									</select>
+								</div>
+                                                            
+                                                            <?php if (get_field('monogram_colors', $settings_id))	{ 
+                                                                $ee=get_field('monogram_colors',$settings_id);
+                                                                ?>
+								<div class="mono_pop_slt">
+									<label for="popup-color">Color</label>
+									<select name="extras[color]">
+										<option value="same as fabric">Same as Fabric</option>
+									<?php for($h=0;$h<count($ee);$h++)
+                                                        { ?>
+									
+							<option value="<?php echo $ee[$h]['monogram_color']; ?>" <?php if ($option_name == $selected_values['position']) { ?>selected="selected"<?php } ?>><?php echo $ee[$h]['monogram_color']; ?></option>
+                                                        
+									<?php } ?>
+									</select>
+								</div>
+                                                            <?php } ?>
+								<div class="mono_pop_slt">
+									<label for="popup-name">Text</label>
+									<input type="text" id="mono_pop_text" name="extras[custom-text]" value="<?php echo $selected_values['custom-text']; ?>" maxlength="3" />
+								</div>
+                            
+                                
+                                                   
+								
+									
+									
+								
+							<?php } ?>
+                                                            
+								
+							</div>
+                            <div class="dn_bbttbn"> <a href="javascript:void(0);" class="btn monogram-done extract">Done</a></div>
+                            
+                                <?php } 
+                                
+                                
+                                
+                                
+                                else { ?>
+                                <div class="jacket_snd_step">
+                                <?php $x = 1; while (has_sub_field('options', $settings_id))	{ ?>
+				<div class="popup-input-box<?php if ($selected_value == trim(get_sub_field('option_name'))) { ?> selected-option<?php } ?>" data-select="<?=trim(get_sub_field('option_name'));?>-<?php echo $x-1; ?>">
+                                    
+                                    
+                                    <?php if(get_sub_field('option_image')) { ?>
+					<img src="<?php the_sub_field('option_image'); ?>" alt="<?php the_sub_field('option_name'); ?>">
+                  
+                                        <?php } ?>
+					<a href="#"><?php the_sub_field('option_name'); ?></a>
+                                    </div>
+				
+			<?php if (($x%4) == 0 && $x != 0) { echo '<div class="clear"></div>'; } ?>
+			<?php $x++; } ?>
+                               </div> 
+							   
+							  <?php /*for mono not need*/ 
+							 /* if($option_name=='monogram') { 
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    ?>
+                                <div class="mono_option">
+                                <?php $l=1; $x = 1; while (has_sub_field('options', $settings_id))	{ ?>
+				<div class="popup-input-box<?php if ($selected_value == trim(get_sub_field('option_name'))) { ?> selected-option<?php } ?>" data-select="<?=trim(get_sub_field('option_name'));?>-<?php echo $x-1; ?>" data-option="<?php echo $option_name;?>">
+                                                                       
+                                    
+                                    <a href="#" class="styl<?php echo $l; ?>"><input type="radio" value="<?php the_sub_field('option_name'); ?>" name="monogram_type" /> <?php the_sub_field('option_name'); ?></a>
+                                    </div>
+				
+			<?php if (($x%4) == 0 && $x != 0) { echo '<div class="clear"></div>'; } ?>
+			<?php $l++; $x++; } ?>
+                               </div> 
+                                
+                                <div class="popup-label" style="display:block;">
+                                                            
+							<?php if (get_field('monogram_positions',$settings_id)){ 
+                                                        $dd=get_field('monogram_positions',$settings_id);
+                                                        
+                                                            ?>
+                                                            <div class="mono_pop_slt">
+									<label for="popup-position">Position</label>
+									<select name="extras[position]">
+										<option value=""> - </option>
+									<?php for($h=0;$h<count(get_field('monogram_positions',$settings_id));$h++)
+                                                        { ?>
+									
+							<option value="<?php echo $dd[$h]['monogram_position']; ?>" <?php if ($option_name == $selected_values['position']) { ?>selected="selected"<?php } ?>><?php echo $dd[$h]['monogram_position']; ?></option>
+                                                        
+									<?php } ?>
+									</select>
+								</div>
+                                                            
+                                                            <?php if (get_field('monogram_colors', $settings_id))	{ 
+                                                                $ee=get_field('monogram_colors',$settings_id);
+                                                                ?>
+								<div class="mono_pop_slt">
+									<label for="popup-color">Color</label>
+									<select name="extras[color]">
+										<option value="same as fabric">Same as Fabric</option>
+									<?php for($h=0;$h<count($ee);$h++)
+                                                        { ?>
+									
+							<option value="<?php echo $ee[$h]['monogram_color']; ?>" <?php if ($option_name == $selected_values['position']) { ?>selected="selected"<?php } ?>><?php echo $ee[$h]['monogram_color']; ?></option>
+                                                        
+									<?php } ?>
+									</select>
+								</div>
+                                                            <?php } ?>
+								<div class="mono_pop_slt">
+									<label for="popup-name">Text</label>
+									<input type="text" name="extras[custom-text]" value="<?php echo $selected_values['custom-text']; ?>" maxlength="3" />
+								</div>
+                            
+                                
+                                                   
+								
+									
+									
+								
+							<?php } ?>
+                                                            
+								
+							</div>
+                            <div class="dn_bbttbn"> <a href="javascript:void(0);" class="btn monogram-done extract">Done</a></div>
+                            
+                                <?php } */?>
+							   
+							   
+							   
+							   
+							   
+                                <?php } ?>
+								
+								
+								
+                                
+                                
+                                
+			</div>
+		<?php } 
+                 ?>
+                 
+		</div>
+        
+	<?php } ?>
+		<!-- popup hidden for development -->
+		<div class="row-fluid" >
+		                  
+			<div class="span12">
+				<div class="browse-design-details">
+                
+				<?php if (get_field('extras_settings', $settings_id))	{ ?>
+					<?php if ($selected_values['lining-code'])	$lining_code = $selected_values['lining-code']; ?>
+					<div class="browse-design-details-box">
+					<?php while (has_sub_field('extras_settings', $settings_id))	{ 
+					if($settings_id==355)
+					{
+						$myfield=get_sub_field('setting_name', $settings_id);
+						if($myfield=='Construction') { 
+							$style="display:none";
+						}
+						else
+						{
+							$style="display:block";
+						}
+					}
+					else
+					{
+							$style="display:block";
+					}
+					?>
+						<div class="input-wrap" style="<?php echo $style; ?>">
+							<label><?php the_sub_field('setting_name', $settings_id); ?></label>
+                            <!-- Nhan.Mai - 20140603 -->
+							<?php //$option_name = sanitize_title(str_replace("<br>", " ", get_sub_field('setting_name', $settings_id))); ?>
+                            <div class="snd_stem_slectbox">
+                            <?php $option_name = sanitize_title(get_sub_field('setting_name', $settings_id)); ?>
+                           	<?php
+							if (metadata_exists ( 'post', $_REQUEST[custom_product_id], 'extras' ))	{
+								$design_meta = unserialize(get_post_meta($_REQUEST[custom_product_id],'extras' , true));
+                                                                foreach($design_meta as $key=>$value)
+                                                                {
+                                                                    if($key==$option_name)
+                                                                    {
+                                                                        $selected_value=$value;
+                                                                    }
+                                                                }
+
+							}
+							?>
+                            
+		<select name="extras[<?php echo $option_name; ?>]" id="target-<?php echo $option_name; ?>" class="select-popup"   id="target-<?php echo $option_name; ?>" data-popup="#extras-<?php echo $option_name; ?>">
+							
+                                <?php $x = 0; while (has_sub_field('options', $settings_id))	{ ?>
+                                
+    							<?php
+    							// Create Monogram colors array
+                                
+    							if ($option_name == "contrasting-buttonhole-stitching")	{
+    							 
+    								if (get_sub_field('option_name') != "No")	{
+    									$monogram_colors[get_sub_field('option_name')] = get_sub_field('option_name');
+    								}
+    							}
+                                
+                                // Price
+    							if (get_sub_field('option_price'))
+                                {
+    								$price = get_currency_price(get_sub_field('option_price'));
+    							}
+                                else
+                                {
+    								$price = "";
+    							}
+                                
+    							?>
+                                
+    								<option value ="<?=trim(get_sub_field('option_name')).'-'.$x; ?>"<?php if (trim(get_selected_value($selected_value)) == trim(get_selected_value(get_sub_field('option_name')))) { ?> selected="selected"<?php } ?>>
+    								    <?php 
+										
+                                            if ($option_name == 'contrastingcollar-cuff-lining') 
+                                            {
+                                                if($lining_code!=NULL)
+                                                {
+                                                    echo get_the_title($item['extras']['lining-code']);
+                                                }
+                                                else
+                                                {
+                                                    $option_value = get_sub_field('option_name');
+                                                    
+                                                    if(strtoupper(trim($option_value))=='YES')
+                                                    {
+                                                        $material_contrasting = get_field('fabric_collar_cuff_lining');
+                                                        $fabricContrasting_id = $material_contrasting[0]->ID;
+                                                        $fabricContrasting_name = get_the_title($fabricContrasting_id);
+                                                        if($fabricContrasting_id != NULL)
+                                                        {
+                                                            echo $fabricContrasting_name;
+                                                        }
+                                                        else
+                                                        {
+                                                            echo $option_value;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        echo $option_value;
+                                                    }
+                                                }
+                                            } 
+                                            else 
+                                            {
+                                                echo get_sub_field('option_name');
+                                            }
+                                            if (!empty($price)) {echo "[+".get_currency_sign()."$price]";}
+                                        ?>
+    								</option>
+                                    
+    							<?php
+                                    $x++;
+                                }
+                                ?>
+                            
+							</select>
+                          
+                            <!---->
+							<?php 
+                                if ($option_name == 'contrastingcollar-cuff-lining')
+                            	{
+   	                        ?>
+                                <input type="hidden" id="lining-code" name="extras[lining-code]" value="<?=$lining_code!=NULL?$lining_code:$fabricContrasting_id; ?>" />
+                            <?php
+                                }
+                            ?>
+                            </div>
+                            
+                            <!---->                                           
+						</div>
+                        
+					<?php } ?>
+						<div class="mono_full_desc">
+                          <script language="javascript" type="text/javascript"> 
+                           jQuery(document).ready(function ($) {
+							});
+                          </script>
+                        </div>
+					</div>
+				<?php } ?>
+                
+					<div class="browse-design-purchase-box">
+						<a href="#sizing-tab" class="btn change-step extract">
+							<span class="arrow">Next</span>
+						</a>
+						<a href="" class="btn-gray step-back extract">
+							<!--<span>Back</span>-->
+							<i class="back_txt"><img src="<?php echo get_template_directory_uri().'/images/back_arrow.png';?>" /></i>
+						</a>
+					</div>
+				</div>
+				<!-- fb plugin -->
+				<div class="fb-like" data-send="true" data-width="320" data-show-faces="false"></div>
+			</div>
+		</div>
+	</div>
+	<!--<div class="browse2-shirt-other-details">
+		<div class="row-fluid">
+			<div class="span3">
+				<h3>Fabric Details</h3>
+				<?php //the_field('fabric_details'); ?>
+			</div>
+			<div class="span3">
+				<h3>Photo Details</h3>
+				<?php //the_field('photo_detail') ?>
+			</div>
+		</div>
+	</div>-->
+</div>
+<?php endif;?>
+    
+<script language="javascript">
+jQuery(document).ready(function($) {
+
+var first = $('#msdrpdd20'),
+	second = $('#mono_pop_text');
+	var chk = function(){
+		if($.trim($('#msdrpdd20 option:selected').val()) && $.trim(second.val())){
+			$('.monogram-done').show();
+		}else{
+			$('.monogram-done').hide();
+		}
+	}
+	$('.popup-label').on('change', first, function(){
+		chk();		
+	})
+	
+	second.on('change keyup', function(){
+		chk();
+	});
+	
+	$('.styl1').on('click', function(e){
+		$('.monogram-done').show();
+	});
+	$('.styl2, .styl3').on('click', function(e){
+		$('.monogram-done').hide();
+	});
+
+
+$('.btn monogram-done extract').hide();
+    $(".popup-window select").msDropDown();
+	
+	
+	//monogram section
+	$('.monogram-done').on('click', function(e){
+			e.preventDefault();	
+			
+	//console.log();
+		var rdio = $('.mono_option').find('input[type="radio"]:checked').val();
+		var sle1 = $('#msdrpdd20 option:selected').val();
+		var sle2 = $('#msdrpdd21 option:selected').val();
+		var txt = $('#mono_pop_text').val();
+		var str = "<span> "+rdio+"- </span><span> "+sle1+"- </span> <span>"+sle2+"- </span><span>&quot;"+txt+"&quot;</span>";
+		
+		if($("input:radio[value=No]").is(":checked")){
+			$(".mono_full_desc").hide();
+			}else{
+				$(".mono_full_desc").show().html(str);
+				}
+	});
+
+
+});
+</script>
