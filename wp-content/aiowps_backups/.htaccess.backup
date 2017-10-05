@@ -1,0 +1,22 @@
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# Added by Siteground Support Team
+<IfModule mod_security.c>
+SecFilterRemove 001566
+</IfModule>
+
+# Basic Protection against XMLRPC attack
+<Files "xmlrpc.php">
+Order Allow,Deny
+deny from all
+</Files>

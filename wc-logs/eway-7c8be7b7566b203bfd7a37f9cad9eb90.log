@@ -1,0 +1,35 @@
+01-22-2016 @ 16:24:15 - Response listener result: stdClass Object
+(
+    [AccessCode] => C3AB9lXDHJvDJwoAdDugZu0Dst-jlOY2IlLg63tyCTNDH_F7ThLMGnfLrpJy2tL_YKHPdXC_tuIPo6B-GKEVyy8p17LghzDTRL_4nCzsg5lL8-IG9IC0H5x4APfknXLxg5EMJ
+    [AuthorisationCode] => 
+    [ResponseCode] => 05
+    [ResponseMessage] => D4405
+    [InvoiceNumber] => 60192
+    [InvoiceReference] => 60192
+    [TotalAmount] => 6998
+    [TransactionID] => 10172822
+    [TransactionStatus] => 
+    [TokenCustomerID] => 
+    [BeagleScore] => 
+    [Options] => Array
+        (
+        )
+
+    [Verification] => stdClass Object
+        (
+            [CVN] => 0
+            [Address] => 0
+            [Email] => 0
+            [Mobile] => 0
+            [Phone] => 0
+        )
+
+    [BeagleVerification] => stdClass Object
+        (
+            [Email] => 0
+            [Phone] => 0
+        )
+
+    [Errors] => 
+)
+
