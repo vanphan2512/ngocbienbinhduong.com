@@ -1,0 +1,52 @@
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# Added by Siteground Support Team
+<IfModule mod_security.c>
+SecFilterRemove 001566
+</IfModule>
+
+# Basic Protection against XMLRPC attack
+<Files "xmlrpc.php">
+Order Allow,Deny
+deny from all
+</Files>
+
+# Block the include-only files.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^wp-admin/includes/ - [F,L]
+RewriteRule !^wp-includes/ - [S=3]
+RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
+RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
+RewriteRule ^wp-includes/theme-compat/ - [F,L]
+</IfModule>
+
+
+# STRONG HTACCESS PROTECTION order allow,deny deny from all satisfy all  
+# protect wpconfig.php order allow,deny deny from all
+# disable directory browsing Options All -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} POST 
+RewriteCond %{REQUEST_URI} .wp-comments-post.php* 
+RewriteCond %{HTTP_REFERER} !.*yourblog.com.* [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^$ 
+RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
+
+Options +FollowSymLinks 
+RewriteEngine On 
+RewriteCond %{QUERY_STRING} (|%3C).*script.*(|%3E) [NC,OR] 
+RewriteCond %{QUERY_STRING} GLOBALS(=|[|%[0-9A-Z]{0,2}) [OR] 
+RewriteCond %{QUERY_STRING} _REQUEST(=|[|%[0-9A-Z]{0,2}) 
+RewriteRule ^(.*)$ index.php [F,L]
